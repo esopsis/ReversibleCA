@@ -66,11 +66,11 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 		for(int i = 2; i < columnSize - 1; i++)
 		{
 			
-			/*Comment for border viewing (1 of 4)*/
+			/*Comment out for border viewing (1 of 5)*/
 			g.setColor(colorArr[prevLine[i]][patternArr[i]]);
 			g.fillRect(x, y, cellSize, cellSize);
 			
-			/*Uncomment for border viewing (2 of 4)*/
+			/*Uncomment for border viewing (2 of 5)*/
 			/*
 			if (partArr[prevLine[i-1]][patternArr[i-1]].equals(white) && partArr[prevLine[i]][patternArr[i]].equals(black)) {
 				g.setColor(black);
@@ -353,8 +353,8 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 	//Color[] colorArr0 = {white, black, white, black, black, white, black, white};
 	//Color[] colorArr1 = {white, black, white, black, black, white, black, white};
 	
-	//Comment for border viewing (3 of 4)
 	//For Rule 37R
+	//Comment out for border viewing (3 of 5)
 	Color[] colorArr0 = {LY, LR, DB, DR, LR, LB, DR, DY};
 	Color[] colorArr1 = {LY, LR, DB, DR, LR, LB, DR, DP};
 	
@@ -413,10 +413,11 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 	//Color[] partArr0 = {red, OR, OY, yellow, GY, GB, blue, PB};
 	//Color[] partArr1 = {white, white, white, white, white, white, white, white};
 	
+	//Comment next line out for border viewing (4 of 5)
 	Color[][] colorArr = {colorArr0,colorArr1};
 	
-	//Uncomment for border viewing (4 of 4)
 	//For Rule 37R
+	//Uncomment for border viewing (5 of 5)
 	//Color[] partArr0 = {white, black, white, black, black, white, black, white};
 	//Color[] partArr1 = {white, black, white, black, black, white, black, white};
 	//Color[][]partArr ={partArr0,partArr1};
