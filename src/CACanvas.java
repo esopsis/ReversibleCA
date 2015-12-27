@@ -7,17 +7,21 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 	protected ReversibleCA rCA;	
 	protected DoubleBufferHandler dbHandler;
 	protected CARule caRule = CARule.getCARule();
+	//Set this to true to view borders.
+	boolean isBorder = true;
+	Color[] partArr[] = null;
+	Color[][] colorArr = null;
 
 	public CACanvas(ReversibleCA rCA)
 	{
 		this.rCA = rCA;
 		reverseRule = rCA.DEFAULT_REVERSIBILITY;
 	}	
-	
+
 	public void initCanvas()
 	{
+		//isBorder = true;
 		cellSize = rCA.cellSize;
-
 		d = getSize();
 		System.out.println(d);
 		width = d.width;
@@ -26,7 +30,7 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 		//height = 500;
 		columnSize = (int)(width / cellSize + 2);
 		midColumn = (int)(columnSize / 2);
-		
+
 		seed1 = new byte[columnSize];
 		seed2 = new byte[columnSize];
 		seed3 = new byte[columnSize];
@@ -37,12 +41,88 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 		currentLine = new byte[columnSize];
 		newLine = new byte[columnSize];	
 		patternArr = new int[columnSize];
-		
+
 		setSeed(rCA.seedType);		
 
 		dbHandler = new DoubleBufferHandler(this);
+		//For Rule 37R
+		//Uncomment for border viewing (5 of 5)
+		if(isBorder) {
+			Color[] partArr0 = {white, black, white, black, black, white, black, white};
+			Color[] partArr1 = {white, black, white, black, black, white, black, white};
+			Color[][] tempArr ={partArr0, partArr1};
+			partArr = tempArr;
+		}
+		else {
+			//For Rule 37R
+			//Color[] colorArr0 = {white, black, white, black, black, white, black, white};
+			//Color[] colorArr1 = {white, black, white, black, black, white, black, white};
+
+			//For Rule 37R
+			//Comment out for border viewing (3 of 5)
+			Color[] colorArr0 = {LY, LR, DB, DR, LR, LB, DR, DY};
+			Color[] colorArr1 = {LY, LR, DB, DR, LR, LB, DR, DP};
+
+			//For Rule 37R
+			//Color[] colorArr0 = {LY, LO, DB, DO, LO, LB, DO, DY};
+			//Color[] colorArr1 = {LY, LR, DB, DR, LR, LB, DR, DP};
+
+			//For Rule 37R
+			//Color[] colorArr0 = {LY, LO, DB, DO, LO, LB, DO, DY};
+			//Color[] colorArr1 = {LY, LR, DB, DR, LR, LB, DR, DP};
+
+			//For Rule 37R
+			//Color[] colorArr0 = {OY, white, PB, PR, white, GB, PR, GY};
+			//Color[] colorArr1 = {OY, OR, PB, black, OR, GB, black, purple};
+
+			//For Rule 37R
+			//Color[] colorArr0 = {OY, OR, PB, PR, OR, GB, PR, GY};
+			//Color[] colorArr1 = {OY, OR, PB, PR, OR, GB, PR, purple};
+
+			//For Rule 37R
+			//Color[] colorArr0 = {YG, RY, BM, MR, RY, CB, MR, GC};
+			//Color[] colorArr1 = {YG, RY, BM, MR, RY, CB, MR, magenta};
+
+			//For Rule 37R
+			//Color[] colorArr0 = {RY, MR, CB, BM, MR, GC, BM, GC};
+			//Color[] colorArr1 = {RY, MR, CB, BM, MR, GC, BM, blue};
+
+			//For Rule 37R
+			//Color[] colorArr0 = {yellow, red, blue, red, red, blue, red, yellow};
+			//Color[] colorArr1 = {yellow, red, blue, red, red, blue, red, purple};
+
+			//For Rule 37R
+			//Color[] colorArr0 = {yellow, red, DB, DR, red, blue, DR, DY};
+			//Color[] colorArr1 = {yellow, red, DB, DR, red, blue, DR, DP};
+
+			//For Rule 37R
+			//Color[] colorArr0 = {LY, LR, blue, red, LR, LB, red, yellow};
+			//Color[] colorArr1 = {LY, LR, blue, red, LR, LB, red, purple};
+
+			//For Rule 37R
+			//Color[] colorArr0 = {white, black, black, black, black, black, black, white};
+			//Color[] colorArr1 = {white, black, black, black, black, black, black, black};
+
+			//For Rule 73R
+			//Color[] colorArr0 = {yellow, yellow, yellow, red, yellow, green, red, red};
+			//Color[] colorArr1 = {yellow, green, red, red, green, green, red, blue};
+
+			//For Rule 73R
+			//Color[] colorArr0 = {yellow, yellow, yellow, red, yellow, yellow, red, red};
+			//Color[] colorArr1 = {yellow, yellow, red, red, yellow, yellow, red, blue};
+
+			//For Rule 73R
+			//Color[] colorArr0 = {white, white, white, black, white, white, black, black};
+			//Color[] colorArr1 = {white, white, black, black, white, white, black, black};
+
+			//Color[] partArr0 = {red, OR, OY, yellow, GY, GB, blue, PB};
+			//Color[] partArr1 = {white, white, white, white, white, white, white, white};
+			//Comment next line out for border viewing (4 of 5)
+			Color[][] tempArr = {colorArr0,colorArr1};
+			colorArr = tempArr;
+		}
 	}
-	
+
 	public synchronized void paintFrame(Graphics g)
 	{
 		if(!skipGrow)
@@ -65,85 +145,87 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 
 		for(int i = 2; i < columnSize - 1; i++)
 		{
-			
+
 			/*Comment out for border viewing (1 of 5)*/
-			g.setColor(colorArr[prevLine[i]][patternArr[i]]);
-			g.fillRect(x, y, cellSize, cellSize);
-			
+
 			/*Uncomment for border viewing (2 of 5)*/
-			/*
-			if (partArr[prevLine[i-1]][patternArr[i-1]].equals(white) && partArr[prevLine[i]][patternArr[i]].equals(black)) {
-				g.setColor(black);
-				//g.fillRect(x - cellSize / 4, y + cellSize / 4, cellSize / 2, cellSize);
-				g.fillRect(x, y, cellSize, cellSize);
-			}
-			else if (partArr[prevLine[i-1]][patternArr[i-1]].equals(black) && partArr[prevLine[i]][patternArr[i]].equals(white)) {
-				g.setColor(white);
-				//g.fillRect(x - cellSize / 4, y + cellSize / 4, cellSize / 2, cellSize);
-				g.fillRect(x, y, cellSize, cellSize);
+			if(isBorder) {
+				if (partArr[prevLine[i-1]][patternArr[i-1]].equals(white) && partArr[prevLine[i]][patternArr[i]].equals(black)) {
+					g.setColor(black);
+					//g.fillRect(x - cellSize / 4, y + cellSize / 4, cellSize / 2, cellSize);
+					g.fillRect(x, y, cellSize, cellSize);
+				}
+				else if (partArr[prevLine[i-1]][patternArr[i-1]].equals(black) && partArr[prevLine[i]][patternArr[i]].equals(white)) {
+					g.setColor(white);
+					//g.fillRect(x - cellSize / 4, y + cellSize / 4, cellSize / 2, cellSize);
+					g.fillRect(x, y, cellSize, cellSize);
+				}
+				else {
+					g.setColor(gray);
+					g.fillRect(x, y, cellSize, cellSize);
+				}
 			}
 			else {
-				g.setColor(gray);
+				g.setColor(colorArr[prevLine[i]][patternArr[i]]);
 				g.fillRect(x, y, cellSize, cellSize);
 			}
-			*/
-			
+
 			x += cellSize;	
 		}
-				
+
 		x = 0;
 		y += cellSize;
-		
+
 		setCounter();
 	}
-	
+
 
 	public synchronized void grow()
 	{
 		newLine = new byte[columnSize];
-			
+
 		prevPattern = 0;
-		
+
 		for(int i = 1; i < columnSize - 1; i++)
 		{
 			prevPattern = 4 * currentLine[i - 1] + 2 * currentLine[i] 
-								+ currentLine[i + 1];
+					+ currentLine[i + 1];
 			patternArr[i] = prevPattern;
 			if((caRule.getRule())[prevPattern] == 1)	{newLine[i] = 1;}
 			else {newLine[i] = 0;}
-				
+
 			if(reverseRule)
 			{
 				if(pastLine[i] == 1)	{newLine[i] = (byte)(newLine[i] ^ pastLine[i]);}
 			}
 		}				
-		
+
 		newLine[0] = newLine[columnSize - 2];
 		newLine[columnSize -1] = newLine[1];
-			
+
 		prevLine = pastLine;
 		pastLine = currentLine;
 		currentLine = newLine;
 	}
 
-   synchronized void setRule(int rule)
-   {
-   	caRule.setRule(rule);
+	synchronized void setRule(int rule)
+	{
+		caRule.setRule(rule);
 	}
-	
+
 	synchronized void setCounter()
-   {
+	{
 		count += toggleCount;		
 		rCA.counter.setText("" + count);
-   }
-   
-   synchronized void resetCounter(int c)
-   {
-   	toggleCount = 1;
-    	count = c;
+	}
+
+	synchronized void resetCounter(int c)
+	{
+		toggleCount = 1;
+		count = c;
 		rCA.counter.setText("" + count);  	
-   }
-   
+	}
+
 	public synchronized void goReverse()
 	{
 		newLine = pastLine;
@@ -153,7 +235,7 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 		skipGrow = true;
 		repaint();
 	}  
-   
+
 	public synchronized void reset()
 	{
 		x = 0;
@@ -161,31 +243,31 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 		pastLine = new byte[columnSize];
 		currentLine = new byte[columnSize];
 		newLine = new byte[columnSize];	
-		
+
 		if(rCA.seedType.equals("Custom"))
 		{
 			pastLine = seed1;
 			currentLine = seed2;
 		}
 		else 	setSeed(rCA.seedType);
-		
+
 		resetCounter(0);
 		clearFlag = true;
 		skipGrow = true;
 		repaint();
 	}
-	
+
 	public synchronized void setSeed(String s)
 	{
 		seed = new byte[columnSize];	
-		
+
 		if("Custom".equals(s))
 		{
 			pastLine = seed1;
 			currentLine = seed2;
 			return;
 		}
-		
+
 		if("Single".equals(s))
 		{
 			seed[midColumn] = 1;
@@ -202,7 +284,7 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 				}
 				else seed3[i] = 1;
 			}
-			
+
 			seed3[0] = seed3[columnSize -2];
 			seed3[columnSize - 1] = seed3[1];
 
@@ -214,7 +296,7 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 				}
 				else seed4[i] = 1;
 			}
-			
+
 			seed4[0] = seed4[columnSize -2];
 			seed4[columnSize - 1] = seed4[1];
 
@@ -225,18 +307,18 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 		repaint();		
 		setCounter();		
 	}
-	
+
 	public synchronized void setSeeds(String first, String second)
 	{
 		char[] f = first.toCharArray();
 		char[] s = second.toCharArray();
-		
+
 		byte[] firstSeed = new byte[f.length];
 		byte[] secondSeed = new byte[s.length];
-		
+
 		seed1 = new byte[columnSize];
 		seed2 = new byte[columnSize];				
-		
+
 		for(int i = 0; i < f.length; i++)
 		{
 			byte temp = Byte.parseByte(""+f[i]);
@@ -246,7 +328,7 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 			}
 			else return;
 		}
-		
+
 		for(int i = 0; i < s.length; i++)
 		{
 			byte temp = Byte.parseByte(""+s[i]);
@@ -256,11 +338,11 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 			}
 			else return;
 		}			
-		
+
 		if(!first.equals(""))
 		{
 			int column = midColumn - firstSeed.length / 2;
-			
+
 			for(int i = 0; i < firstSeed.length; i++)
 			{
 				seed1[column] = firstSeed[i];
@@ -271,14 +353,14 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 		if(!second.equals(""))
 		{
 			int column = midColumn - secondSeed.length / 2;
-			
+
 			for(int i = 0; i < secondSeed.length; i++)
 			{
 				seed2[column] = secondSeed[i];
 				column++;
 			}
 		}
-		
+
 		pastLine = seed1;			
 		currentLine = seed2;
 	}
@@ -286,7 +368,7 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 	public void jump(int j)
 	{
 		if(j == count) return;
-		
+
 		if(JumpThread.isNull())
 		{
 			if((toggleCount == 1 && j < count) || (toggleCount == -1 && j > count)) goReverse();
@@ -299,18 +381,18 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 	{
 		dbHandler.update(g);
 	}
-	
+
 	public void paint(Graphics g)
 	{
 		update(g);
 	}
-	
+
 	public int rInt(double x){
 		return (int) Math.round(x);
 	}
-	
+
 	protected Dimension d;
-	
+
 	boolean reverseRule;
 	boolean clearFlag;
 	boolean skipGrow;
@@ -340,7 +422,7 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 	Color LO = new Color (255,rInt(127.5 + 127.5 * shader), rInt(255 * shader));
 	Color LY = new Color (255,255,rInt(255 * shader));
 	Color LB = new Color(rInt(255 * shader),rInt(255 * shader),255);
-	
+
 	Color RY = new Color(255, 128, 0);
 	Color YG = new Color(128, 255, 0);
 	Color GC = new Color(0, 255, 128);
@@ -348,79 +430,6 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 	Color BM = new Color(128, 0, 255);
 	Color MR = new Color(255, 0, 128);
 	Color magenta = new Color(255, 0, 255);
-	
-	//For Rule 37R
-	//Color[] colorArr0 = {white, black, white, black, black, white, black, white};
-	//Color[] colorArr1 = {white, black, white, black, black, white, black, white};
-	
-	//For Rule 37R
-	//Comment out for border viewing (3 of 5)
-	Color[] colorArr0 = {LY, LR, DB, DR, LR, LB, DR, DY};
-	Color[] colorArr1 = {LY, LR, DB, DR, LR, LB, DR, DP};
-	
-	//For Rule 37R
-	//Color[] colorArr0 = {LY, LO, DB, DO, LO, LB, DO, DY};
-	//Color[] colorArr1 = {LY, LR, DB, DR, LR, LB, DR, DP};
-	
-	//For Rule 37R
-	//Color[] colorArr0 = {LY, LO, DB, DO, LO, LB, DO, DY};
-	//Color[] colorArr1 = {LY, LR, DB, DR, LR, LB, DR, DP};
-	
-	//For Rule 37R
-	//Color[] colorArr0 = {OY, white, PB, PR, white, GB, PR, GY};
-	//Color[] colorArr1 = {OY, OR, PB, black, OR, GB, black, purple};
-	
-	//For Rule 37R
-	//Color[] colorArr0 = {OY, OR, PB, PR, OR, GB, PR, GY};
-	//Color[] colorArr1 = {OY, OR, PB, PR, OR, GB, PR, purple};
-	
-	//For Rule 37R
-	//Color[] colorArr0 = {YG, RY, BM, MR, RY, CB, MR, GC};
-	//Color[] colorArr1 = {YG, RY, BM, MR, RY, CB, MR, magenta};
-	
-	//For Rule 37R
-	//Color[] colorArr0 = {RY, MR, CB, BM, MR, GC, BM, GC};
-	//Color[] colorArr1 = {RY, MR, CB, BM, MR, GC, BM, blue};
-	
-	//For Rule 37R
-	//Color[] colorArr0 = {yellow, red, blue, red, red, blue, red, yellow};
-	//Color[] colorArr1 = {yellow, red, blue, red, red, blue, red, purple};
-	
-	//For Rule 37R
-	//Color[] colorArr0 = {yellow, red, DB, DR, red, blue, DR, DY};
-	//Color[] colorArr1 = {yellow, red, DB, DR, red, blue, DR, DP};
-	
-	//For Rule 37R
-	//Color[] colorArr0 = {LY, LR, blue, red, LR, LB, red, yellow};
-	//Color[] colorArr1 = {LY, LR, blue, red, LR, LB, red, purple};
-	
-	//For Rule 37R
-	//Color[] colorArr0 = {white, black, black, black, black, black, black, white};
-	//Color[] colorArr1 = {white, black, black, black, black, black, black, black};
-	
-	//For Rule 73R
-	//Color[] colorArr0 = {yellow, yellow, yellow, red, yellow, green, red, red};
-	//Color[] colorArr1 = {yellow, green, red, red, green, green, red, blue};
-	
-	//For Rule 73R
-	//Color[] colorArr0 = {yellow, yellow, yellow, red, yellow, yellow, red, red};
-	//Color[] colorArr1 = {yellow, yellow, red, red, yellow, yellow, red, blue};
-	
-	//For Rule 73R
-	//Color[] colorArr0 = {white, white, white, black, white, white, black, black};
-	//Color[] colorArr1 = {white, white, black, black, white, white, black, black};
-	
-	//Color[] partArr0 = {red, OR, OY, yellow, GY, GB, blue, PB};
-	//Color[] partArr1 = {white, white, white, white, white, white, white, white};
-	
-	//Comment next line out for border viewing (4 of 5)
-	Color[][] colorArr = {colorArr0,colorArr1};
-	
-	//For Rule 37R
-	//Uncomment for border viewing (5 of 5)
-	//Color[] partArr0 = {white, black, white, black, black, white, black, white};
-	//Color[] partArr1 = {white, black, white, black, black, white, black, white};
-	//Color[][]partArr ={partArr0,partArr1};
 
 	int width;
 	int height;
@@ -449,16 +458,16 @@ public class CACanvas extends JPanel implements DoubleBufferedComponent
 class JumpThread extends Thread
 {
 	private CACanvas owner;
-	
+
 	private static JumpThread jumpThread = null;
-	
+
 
 	public static boolean isNull()
 	{
 		if(jumpThread == null) return true;
 		else return false;
 	}
-	
+
 	public static JumpThread getJumpThread(CACanvas o, int begin, int goal, int toggle)
 	{
 		if(jumpThread == null) jumpThread = new JumpThread(o, begin, goal, toggle);
@@ -472,7 +481,7 @@ class JumpThread extends Thread
 		this.goal = goal;
 		this.toggle = toggle;
 	}
-	
+
 	public void run()
 	{
 		while(begin != goal)
@@ -480,8 +489,8 @@ class JumpThread extends Thread
 			owner.grow();
 			begin += toggle;
 			temp++;	
-		
-		
+
+
 			if (temp == 3333)
 			{
 				temp = 0;
